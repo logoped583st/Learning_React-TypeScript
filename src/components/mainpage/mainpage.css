@@ -1,0 +1,23 @@
+@import '~antd/dist/antd.css';
+
+.mainPageSection{
+    background-color: #ffffff;
+    height: 100%;
+    width: 70%;
+    align-items: start;
+    padding-bottom: 64px;
+    margin: 50px 15% 50px 15%;
+    border-bottom-left-radius: 24px;
+    border-bottom-right-radius: 24px;
+}
+
+.avatar{
+    width: 128px;
+    height: 128px;
+    margin: 32px 0 0 32px;
+    border-radius: 10px 10px 10px 10px;
+}
+
+.userText{
+    margin: 8px 0 0 32px;
+}

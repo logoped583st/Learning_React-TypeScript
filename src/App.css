@@ -1,0 +1,53 @@
+@import '~antd/dist/antd.css';
+
+.App {
+}
+
+header{
+    text-align: center;
+}
+body {
+    background-color: #f5f5f5;
+}
+
+.App-logo {
+    animation: App-logo-spin infinite 20s linear;
+    height: 80px;
+}
+
+.App-header {
+    background-color: #222;
+    height: 100px;
+    padding: 20px;
+    color: white;
+}
+
+h1 {
+    font-size: 48px;
+    color: #ffffff;
+}
+
+.App-title {
+    font-size: 1.5em;
+}
+
+.App-intro {
+    font-size: large;
+}
+
+.login-form {
+    margin: 100px auto auto auto;
+    max-width: 300px;
+}
+
+#components-form-demo-normal-login .login-form-forgot {
+    float: right;
+}
+
+#components-form-demo-normal-login .login-form-button {
+    width: 100%;
+}
+
+.ant-btn {
+    margin-right: 5px;
+}
