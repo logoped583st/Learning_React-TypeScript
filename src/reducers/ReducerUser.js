@@ -1,14 +1,10 @@
 const initialStateUser = {
-    image: '',
-    name: '',
-    login: '',
-    bio: '',
-    blog: '',
-    company: '',
-    location: '',
+    id: '',
+    photo: '',
     email: '',
-    social: '',
-    error:null
+    error: false,
+    admin: false
+
 };
 
 
@@ -17,7 +13,7 @@ const reducerUser = (state = initialStateUser, action) => {
         case 'RESPONCE_SUCCESS_USER': {
             return Object.assign({}, state.reducerUser, action.data);
         }
-        case 'RESPONCE_ERROR_USER':{
+        case 'RESPONCE_ERROR_USER': {
             return Object.assign({}, state.reducerUser, action.data);
         }
         default: {

@@ -51,3 +51,9 @@ h1 {
 .ant-btn {
     margin-right: 5px;
 }
+
+.ant-form-item{
+    display: flex;
+
+    justify-content: center
+}

@@ -1,6 +1,6 @@
 @import '~antd/dist/antd.css';
 
-.mainPageSection{
+.mainPageSection {
     background-color: #ffffff;
     height: 100%;
     width: 70%;
@@ -11,13 +11,23 @@
     border-bottom-right-radius: 24px;
 }
 
-.avatar{
+.avatar {
     width: 128px;
     height: 128px;
     margin: 32px 0 0 32px;
     border-radius: 10px 10px 10px 10px;
 }
 
-.userText{
+.userText {
     margin: 8px 0 0 32px;
+}
+
+.fab{
+    position: relative;
+    margin-top: 15%;
+    margin-left: 90%;
+}
+
+p {
+    display: block;
 }
