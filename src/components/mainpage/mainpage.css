@@ -23,11 +23,37 @@
 }
 
 .fab{
-    position: relative;
-    margin-top: 15%;
-    margin-left: 90%;
+    display: block;
+    float: right;
+    margin-top: 16px;
+    margin-right: 16px;
 }
 
 p {
     display: block;
+}
+
+.taskArea{
+    margin: 32px 0 0 32px;
+    background-color: #EEEEEE;
+}
+
+.mainPageSection{
+
+}
+
+.taskArea{
+    margin: 8px 16px 0 16px;
+    height: 100%;
+    vertical-align: middle;
+}
+.flexMain{
+    display: flex;
+    flex-direction: row;
+}
+
+.containerTasks{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }

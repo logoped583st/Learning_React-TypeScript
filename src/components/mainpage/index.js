@@ -19,8 +19,14 @@ class MainPageComponent extends React.Component {
             modaVisible: false,
             users: [],
             id: '',
-            descriptionCreate: ''
-        }
+            descriptionCreate: '',
+            taskName: '',
+            tasks: []
+        };
+
+        console.log(this.props.id);
+        this.props.getTasks(this.props.id)
+
     }
 
     setModalVisible = (modal1Visible) => {
@@ -40,6 +46,10 @@ class MainPageComponent extends React.Component {
         this.setState({descriptionCreate: e.target.value})
     };
 
+    nameChange = (e) => {
+        this.setState({taskName: e.target.value})
+    };
+
 
     render() {
         if (this.props.admin && this.props.users.length < 1) {
@@ -51,38 +61,60 @@ class MainPageComponent extends React.Component {
             return <p>{data.email}</p>
         });
 
+        const tasks = this.props.tasks.map((data) => {
+            return <section className="taskArea">{data.description}</section>
+        })
+
         const admin = this.props.admin;
         return (
             <section className="mainPageSection">
-                <Modal
-                    title="Create Tasl"
-                    style={{top: 20}}
-                    visible={this.state.modal1Visible}
-                    onOk={() => this.createTaskClick(false)}
-                    onCancel={() => this.setModalVisible(false)}>
-                    <TextArea placeholder="Description of task" onChange={this.descriptionChange}
-                              autosize={{minRows: 3, maxRows: 6}}/>
-                </Modal>
-                <img className="avatar" src={this.props.photo} alt="avatar"/>
-                <h2 className="userText"> {this.props.nickname}</h2>
+                <section className="flexMain">
+                    <Modal
+                        title="Create Task"
+                        style={{top: 20}}
+                        visible={this.state.modal1Visible}
+                        onOk={() => this.createTaskClick(false)}
+                        onCancel={() => this.setModalVisible(false)}>
+                    <TextArea placeholder="Name of task" onChange={this.nameChange}
+                              autosize={{minRows: 1, maxRows: 1}}/>
+                        <TextArea placeholder="Description of task" onChange={this.descriptionChange}
+                                  autosize={{minRows: 3, maxRows: 6}}/>
+                    </Modal>
+                    <section>
+                        <img className="avatar" src={this.props.photo} alt="avatar"/>
+                        <h2 className="userText"> {this.props.nickname}</h2>
+                    </section>
 
-                {admin === true && <h2>All users</h2>}
-                {a}
 
+                    <section className="containerTasks">
+                        {tasks}
+                    </section>
+
+
+                    {/*<section className="taskArea">*/}
+                        {/*fffffasdfasdfasdfghdfggddfgsdfgsadfsadfdfsadfsadfsadfsadfsdfsdfsdfsaadfsadfsfsaadfsadfsadfsadfsdfasadfsadfsadfsdfsadfsaadfsadfsadfsadfsadfsadfsadfsadfs*/}
+                    {/*</section>*/}
+
+                    {admin === true && <h2>All users</h2>}
+                    {a}
+                </section>
                 <Button className="fab" type="primary" shape="circle" icon="plus" size="large"
                         onClick={() => this.setModalVisible(true)}/>
             </section>
         );
     }
+
 }
 
+
 const getState = (state) => {
-
     console.log(state.reducerUser);
+    // if(state.reducerUser.email === ''){
+    //     this.props.
+    // }
     if (state.reducerUser.id !== '') {
-        getTasks(state.reducerUser.id)
+        localStorage.setItem('id', state.reducerUser.id);
     }
-
 
     return {
         nickname: state.reducerUser.email,
@@ -91,7 +123,7 @@ const getState = (state) => {
         admin: state.reducerUser.admin,
         id: state.reducerUser.id,
         users: state.reducerAllUsers.users,
-        tasks: state.reducerTasks
+        tasks: state.reducerTasks.tasks
     };
 };
 

@@ -1,4 +1,4 @@
-import {fetchUserError, fetchUsersSuccess, fetchUserSuccess} from "../actions/actions";
+import {fetchTasksSuccess, fetchUserError, fetchUsersSuccess, fetchUserSuccess} from "../actions/actions";
 import reducerTasks from "../reducers/ReducerTasks";
 
 const BASE_URL = 'http://localhost:8080/';
@@ -68,7 +68,7 @@ export const getTasks = (id) => (dispatch) => {
 
             }
         }).then((json) => {
-            return dispatch(reducerTasks(json))
+            return dispatch(fetchTasksSuccess(json))
         })
 };
 
@@ -88,7 +88,7 @@ export const createTask =  (id,description) => (dispatch) => {
 
         }
     }).then((json) => {
-        return dispatch(reducerTasks(json))
+        return dispatch(fetchTasksSuccess(json))
     })
 }
 

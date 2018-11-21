@@ -38,5 +38,16 @@ export const fetchUsersSuccess = (responce) => (dispatch) => {
     )
 };
 
+export const fetchTasksSuccess = (response) => (dispatch) => {
+    return dispatch(
+        {
+            type: 'RESPONCE_SUCCESS_TASKS',
+            data: {
+                tasks: response
+            }
+        }
+    )
+}
+
 
 
