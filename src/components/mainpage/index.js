@@ -1,7 +1,7 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import './mainpage.css'
-import {createTask, getTasks, sendRequestAllUser} from "../../requsets/Requests";
+import {createTask, getTasks, getUser, sendRequestAllUser} from "../../requsets/Requests";
 import {Button, Modal, Input} from "antd";
 
 
@@ -25,7 +25,12 @@ class MainPageComponent extends React.Component {
         };
 
         console.log(this.props.id);
-        this.props.getTasks(this.props.id)
+        if(this.state.nickname === ''){
+            console.log(localStorage.getItem('id'));
+            this.props.getUser(localStorage.getItem('id'))
+        }
+
+        this.props.getTasks(localStorage.getItem('id'))
 
     }
 
@@ -56,14 +61,14 @@ class MainPageComponent extends React.Component {
             this.props.sendRequestAllUser(this.props.nickname)
         }
 
-
+        console.log(this.props.tasks);
         const a = this.props.users.map((data) => {
             return <p>{data.email}</p>
         });
 
         const tasks = this.props.tasks.map((data) => {
             return <section className="taskArea">{data.description}</section>
-        })
+        });
 
         const admin = this.props.admin;
         return (
@@ -83,6 +88,9 @@ class MainPageComponent extends React.Component {
                     <section>
                         <img className="avatar" src={this.props.photo} alt="avatar"/>
                         <h2 className="userText"> {this.props.nickname}</h2>
+
+                        {admin === true && <h2>All users</h2>}
+                        {a}
                     </section>
 
 
@@ -95,8 +103,7 @@ class MainPageComponent extends React.Component {
                         {/*fffffasdfasdfasdfghdfggddfgsdfgsadfsadfdfsadfsadfsadfsadfsdfsdfsdfsaadfsadfsfsaadfsadfsadfsadfsdfasadfsadfsadfsdfsadfsaadfsadfsadfsadfsadfsadfsadfsadfs*/}
                     {/*</section>*/}
 
-                    {admin === true && <h2>All users</h2>}
-                    {a}
+
                 </section>
                 <Button className="fab" type="primary" shape="circle" icon="plus" size="large"
                         onClick={() => this.setModalVisible(true)}/>
@@ -108,10 +115,7 @@ class MainPageComponent extends React.Component {
 
 
 const getState = (state) => {
-    console.log(state.reducerUser);
-    // if(state.reducerUser.email === ''){
-    //     this.props.
-    // }
+
     if (state.reducerUser.id !== '') {
         localStorage.setItem('id', state.reducerUser.id);
     }
@@ -127,4 +131,4 @@ const getState = (state) => {
     };
 };
 
-export default connect(getState, {sendRequestAllUser, getTasks, createTask})(MainPageComponent);
+export default connect(getState, {sendRequestAllUser, getTasks, createTask,getUser})(MainPageComponent);

@@ -47,6 +47,17 @@ export const fetchTasksSuccess = (response) => (dispatch) => {
             }
         }
     )
+};
+
+export const fetchCreateTasksSuccess = (response) => (dispatch) => {
+    return dispatch(
+        {
+            type: 'RESPONCE_SUCCESS_CREATE_TASKS',
+            data: {
+                task: response
+            }
+        }
+    )
 }
 
 
