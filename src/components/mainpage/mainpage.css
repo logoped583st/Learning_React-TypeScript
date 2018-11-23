@@ -42,9 +42,22 @@ p {
 
 }
 
+.taskName{
+    margin-left: 32px;
+}
+
+.taskDescription{
+    margin: 0 32px 0 32px;
+    font-size: 24px;
+    font-family: "Noto Sans Mono CJK JP Regular";
+}
+
 .taskArea{
     margin: 8px 16px 0 16px;
-    height: 100%;
+    display: flex;
+    border-bottom-left-radius: 24px;
+    border-bottom-right-radius: 24px;
+    flex-direction: column;
     vertical-align: middle;
 }
 .flexMain{

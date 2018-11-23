@@ -25,7 +25,7 @@ class MainPageComponent extends React.Component {
         };
 
         console.log(this.props.id);
-        if(this.state.nickname === ''){
+        if (this.state.nickname === '') {
             console.log(localStorage.getItem('id'));
             this.props.getUser(localStorage.getItem('id'))
         }
@@ -43,7 +43,7 @@ class MainPageComponent extends React.Component {
         this.setState({modal1Visible});
         console.log(this.props.id);
 
-        this.props.createTask(this.props.id, this.state.descriptionCreate)
+        this.props.createTask(this.props.id, this.state.descriptionCreate, this.state.taskName)
     };
 
 
@@ -67,7 +67,12 @@ class MainPageComponent extends React.Component {
         });
 
         const tasks = this.props.tasks.map((data) => {
-            return <section className="taskArea">{data.description}</section>
+            return <section className="taskArea">
+                <h2 className="taskName">{data.nameTask}</h2>
+                    <section className="taskDescription">
+                        {data.description}
+                    </section>
+            </section>
         });
 
         const admin = this.props.admin;
@@ -100,7 +105,7 @@ class MainPageComponent extends React.Component {
 
 
                     {/*<section className="taskArea">*/}
-                        {/*fffffasdfasdfasdfghdfggddfgsdfgsadfsadfdfsadfsadfsadfsadfsdfsdfsdfsaadfsadfsfsaadfsadfsadfsadfsdfasadfsadfsadfsdfsadfsaadfsadfsadfsadfsadfsadfsadfsadfs*/}
+                    {/*fffffasdfasdfasdfghdfggddfgsdfgsadfsadfdfsadfsadfsadfsadfsdfsdfsdfsaadfsadfsfsaadfsadfsadfsadfsdfasadfsadfsadfsdfsadfsaadfsadfsadfsadfsadfsadfsadfsadfs*/}
                     {/*</section>*/}
 
 
@@ -131,4 +136,4 @@ const getState = (state) => {
     };
 };
 
-export default connect(getState, {sendRequestAllUser, getTasks, createTask,getUser})(MainPageComponent);
+export default connect(getState, {sendRequestAllUser, getTasks, createTask, getUser})(MainPageComponent);

@@ -95,14 +95,14 @@ export const getTasks = (id) => (dispatch) => {
         })
 };
 
-export const createTask = (id, description) => (dispatch) => {
+export const createTask = (id, description, taskName) => (dispatch) => {
     return fetch(BASE_URL + "createTask", {
         method: "POST",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({id: id, description: description})
+        body: JSON.stringify({id: id, description: description, nameTask: taskName})
     }).then((res) => {
         if (200 <= res.status < 400) {
             console.log(res.status)
@@ -113,5 +113,5 @@ export const createTask = (id, description) => (dispatch) => {
     }).then((json) => {
         return dispatch(fetchCreateTasksSuccess(json))
     })
-}
+};
 
