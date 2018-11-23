@@ -44,6 +44,9 @@ p {
 
 .taskName{
     margin-left: 32px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
 }
 
 .taskDescription{
@@ -69,4 +72,8 @@ p {
     width: 100%;
     display: flex;
     flex-direction: column;
+}
+
+.buttonsEdit{
+    margin-top: 8px;
 }

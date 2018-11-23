@@ -1,7 +1,7 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import './mainpage.css'
-import {createTask, getTasks, getUser, sendRequestAllUser} from "../../requsets/Requests";
+import {createTask, deleteTask, getTasks, getUser, sendRequestAllUser, updateTask} from "../../requsets/Requests";
 import {Button, Modal, Input} from "antd";
 
 
@@ -21,7 +21,10 @@ class MainPageComponent extends React.Component {
             id: '',
             descriptionCreate: '',
             taskName: '',
-            tasks: []
+            tasks: [],
+            taskId: '',
+            descriptionUpdate: '',
+            taskNameUpdate: ''
         };
 
         console.log(this.props.id);
@@ -29,21 +32,32 @@ class MainPageComponent extends React.Component {
             console.log(localStorage.getItem('id'));
             this.props.getUser(localStorage.getItem('id'))
         }
-
         this.props.getTasks(localStorage.getItem('id'))
 
     }
 
     setModalVisible = (modal1Visible) => {
-        this.setState({modal1Visible});
+        this.setState({modal1Visible: modal1Visible});
+    };
+
+
+    setModalUpdateVisible = (modalVisible, taskName, description, taskId) => {
+        this.setState({descriptionUpdate: description, taskNameUpdate: taskName, taskId: taskId});
+        this.setState({modalVisible})
     };
 
 
     createTaskClick = (modal1Visible) => {
-        this.setState({modal1Visible});
+        this.setState({modal1Visible: modal1Visible});
         console.log(this.props.id);
 
-        this.props.createTask(this.props.id, this.state.descriptionCreate, this.state.taskName)
+        this.props.createTask(this.props.id, this.state.descriptionCreate, this.state.taskName);
+        this.state.descriptionCreate = '';
+        this.state.taskName = '';
+    };
+
+    deleteTask = (id) => {
+        this.props.deleteTask(id, this.props.id)
     };
 
 
@@ -53,6 +67,24 @@ class MainPageComponent extends React.Component {
 
     nameChange = (e) => {
         this.setState({taskName: e.target.value})
+    };
+
+    updateDescriptionChange = (e) => {
+        this.setState({descriptionUpdate: e.target.value})
+    };
+
+    updateNameChange = (e) => {
+        this.setState({taskNameUpdate: e.target.value})
+    };
+
+
+    updateTaskClick = (modalVisible) => {
+        this.setState({modalVisible});
+        console.log(this.props.id, this.state.taskId, this.state.descriptionUpdate, this.state.taskNameUpdate);
+
+        this.props.updateTask(this.props.id, this.state.taskId, this.state.descriptionUpdate, this.state.taskNameUpdate);
+        this.state.descriptionUpdate = '';
+        this.state.taskNameUpdate = '';
     };
 
 
@@ -68,10 +100,18 @@ class MainPageComponent extends React.Component {
 
         const tasks = this.props.tasks.map((data) => {
             return <section className="taskArea">
-                <h2 className="taskName">{data.nameTask}</h2>
-                    <section className="taskDescription">
-                        {data.description}
+                <section className="taskName">
+                    <h2>{data.nameTask}</h2>
+                    <section className="buttonsEdit">
+                        <Button type="primary" shape="circle" icon="edit" size="small"
+                                onClick={() => this.setModalUpdateVisible(true, data.nameTask, data.description, data.uniqId)}/>
+                        <Button type="primary" shape="circle" icon="delete" size="small"
+                                onClick={() => this.deleteTask(data.uniqId)}/>
                     </section>
+                </section>
+                <section className="taskDescription">
+                    {data.description}
+                </section>
             </section>
         });
 
@@ -85,11 +125,35 @@ class MainPageComponent extends React.Component {
                         visible={this.state.modal1Visible}
                         onOk={() => this.createTaskClick(false)}
                         onCancel={() => this.setModalVisible(false)}>
-                    <TextArea placeholder="Name of task" onChange={this.nameChange}
+                    <TextArea id="textAreaOwn" placeholder="Name of task"
+                              value={this.state.taskName}
+                              onChange={this.nameChange}
                               autosize={{minRows: 1, maxRows: 1}}/>
-                        <TextArea placeholder="Description of task" onChange={this.descriptionChange}
+                        <TextArea id="textAreaOwn" placeholder="Description of task"
+                                  onChange={this.descriptionChange}
+
+                                  value={this.state.descriptionCreate}
                                   autosize={{minRows: 3, maxRows: 6}}/>
                     </Modal>
+
+
+                    <Modal
+                        title="Update Task"
+                        style={{top: 20}}
+                        visible={this.state.modalVisible}
+                        onOk={() => this.updateTaskClick(false)}
+                        onCancel={() => this.setModalUpdateVisible(false)}>
+                    <TextArea id="textAreaOwn" placeholder="Name of task"
+                              onChange={this.updateNameChange}
+                              value={this.state.taskNameUpdate}
+                              autosize={{minRows: 1, maxRows: 1}}/>
+                        <TextArea id="textAreaOwn" placeholder="Description of task"
+                                  onChange={this.updateDescriptionChange}
+
+                                  value={this.state.descriptionUpdate}
+                                  autosize={{minRows: 3, maxRows: 6}}/>
+                    </Modal>
+
                     <section>
                         <img className="avatar" src={this.props.photo} alt="avatar"/>
                         <h2 className="userText"> {this.props.nickname}</h2>
@@ -98,16 +162,9 @@ class MainPageComponent extends React.Component {
                         {a}
                     </section>
 
-
                     <section className="containerTasks">
                         {tasks}
                     </section>
-
-
-                    {/*<section className="taskArea">*/}
-                    {/*fffffasdfasdfasdfghdfggddfgsdfgsadfsadfdfsadfsadfsadfsadfsdfsdfsdfsaadfsadfsfsaadfsadfsadfsadfsdfasadfsadfsadfsdfsadfsaadfsadfsadfsadfsadfsadfsadfsadfs*/}
-                    {/*</section>*/}
-
 
                 </section>
                 <Button className="fab" type="primary" shape="circle" icon="plus" size="large"
@@ -115,6 +172,7 @@ class MainPageComponent extends React.Component {
             </section>
         );
     }
+
 
 }
 
@@ -136,4 +194,11 @@ const getState = (state) => {
     };
 };
 
-export default connect(getState, {sendRequestAllUser, getTasks, createTask, getUser})(MainPageComponent);
+export default connect(getState, {
+    sendRequestAllUser,
+    getTasks,
+    createTask,
+    getUser,
+    deleteTask,
+    updateTask
+})(MainPageComponent);

@@ -10,7 +10,7 @@ import reducerTasks from "../reducers/ReducerTasks";
 const BASE_URL = 'http://localhost:8080/';
 
 export const sendRequestUser = (login, password) => (dispatch) => {
-    console.log(login + " " + password)
+    console.log(login + " " + password);
     return fetch(BASE_URL + 'authorization?login=' + login + "&password=" + password)
         .then((res) => {
 
@@ -85,7 +85,7 @@ export const getTasks = (id) => (dispatch) => {
     return fetch(BASE_URL + 'tasks?id=' + id)
         .then((res) => {
             if (200 <= res.status < 400) {
-                console.log(res.status)
+                console.log(res.status);
                 return res.json()
             } else {
 
@@ -105,13 +105,50 @@ export const createTask = (id, description, taskName) => (dispatch) => {
         body: JSON.stringify({id: id, description: description, nameTask: taskName})
     }).then((res) => {
         if (200 <= res.status < 400) {
-            console.log(res.status)
             return res.json()
         } else {
 
         }
     }).then((json) => {
         return dispatch(fetchCreateTasksSuccess(json))
+    })
+};
+
+export const deleteTask = (id, userUUID) => (dispatch) => {
+    return fetch('http://localhost:8080/delete?id=' + id + '&userUUID=' + userUUID, {
+        method: 'delete',
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json'
+        },
+    }).then((res) => {
+        if (200 <= res.status < 400) {
+            return res.json()
+        } else {
+
+        }
+    }).then((json) => {
+        return dispatch(fetchTasksSuccess(json))
+    })
+};
+
+
+export const updateTask = (userUUID, id, description, taskName) => (dispatch) => {
+    return fetch(BASE_URL + "update?userUUID=" + userUUID, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id: id, description: description, nameTask: taskName})
+    }).then((res) => {
+        if (200 <= res.status < 400) {
+            return res.json()
+        } else {
+
+        }
+    }).then((json) => {
+        return dispatch(fetchTasksSuccess(json))
     })
 };
 
