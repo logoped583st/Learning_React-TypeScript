@@ -40,7 +40,6 @@ class MainPageComponent extends React.Component {
         this.setState({modal1Visible: modal1Visible});
     };
 
-
     setModalUpdateVisible = (modalVisible, taskName, description, taskId) => {
         this.setState({descriptionUpdate: description, taskNameUpdate: taskName, taskId: taskId});
         this.setState({modalVisible})
@@ -157,7 +156,7 @@ class MainPageComponent extends React.Component {
                     <section>
                         <img className="avatar" src={this.props.photo} alt="avatar"/>
                         <h2 className="userText"> {this.props.nickname}</h2>
-
+                        {/*<Button className="editProfileButton" type="primary">Edit Profile</Button>*/}
                         {admin === true && <h2>All users</h2>}
                         {a}
                     </section>
