@@ -52,6 +52,7 @@ p {
 .taskDescription{
     margin: 0 32px 0 32px;
     font-size: 24px;
+    padding-bottom: 20px;
     font-family: "Noto Sans Mono CJK JP Regular";
 }
 
@@ -80,4 +81,8 @@ p {
 
 .editProfileButton{
     margin-left: 48px;
+}
+
+.editProfileButton{
+    margin-top: 24px;
 }

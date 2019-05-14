@@ -5,7 +5,7 @@ import * as React from "react";
 import {Redirect, Link} from 'react-router-dom'
 
 
-const FormItem = Form.Item;
+let FormItem = Form.Item;
 
 
 class LoginComponent extends React.Component {
@@ -15,30 +15,31 @@ class LoginComponent extends React.Component {
         this.state = {
             email: '',
             password: '',
-            login: '',
-            error: ''
+            token: '',
+            error: false
         };
     }
 
     handleLoginChange = (e) => {
+        this.setState({error: false});
         this.setState({email: e.target.value});
     };
 
 
-    handlePasswordChange = (e)  =>{
+    handlePasswordChange = (e) => {
+        this.state.error = false;
         this.setState({password: e.target.value});
     };
 
     onSubmit = (e) => {
         e.preventDefault();
-
         this.props.sendRequestUser(this.state.email, this.state.password);
     };
 
     render() {
-        console.log(this.props.login);
-        const a = this.props;
-        if (a.login !== '') {
+        console.log(this.props.token);
+        if (this.props  .token !== '') {
+            localStorage.setItem('token', this.props.token);
             return <Redirect to='/tempMaimPage'/>
         }
 
@@ -48,7 +49,7 @@ class LoginComponent extends React.Component {
                 <FormItem>
                     <Input prefix={<Icon type="user"/>}
                            placeholder="Username"
-                           onChange = {this.handleLoginChange}
+                           onChange={this.handleLoginChange}
                            type="text"/>
 
                 </FormItem>
@@ -65,7 +66,7 @@ class LoginComponent extends React.Component {
                     </Button>
                     Or <Link to="/registration">register now!</Link>
                 </FormItem>
-                {a.error ===true && <h2>Incorrect login or password</h2>}
+                {this.props.error === true && <h2>Incorrect login or password</h2>}
             </Form>
 
         );
@@ -75,9 +76,9 @@ class LoginComponent extends React.Component {
 }
 
 const getState = (state) => {
+    console.log(state);
     return {
-        login: state.reducerUser.email,
-        error: state.reducerUser.error
+        token: state.reducerToken.token,
     }
 
 };

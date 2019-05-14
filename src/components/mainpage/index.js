@@ -12,7 +12,6 @@ class MainPageComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            nickname: '',
             photo: '',
             fullName: '',
             admin: false,
@@ -24,16 +23,14 @@ class MainPageComponent extends React.Component {
             tasks: [],
             taskId: '',
             descriptionUpdate: '',
-            taskNameUpdate: ''
+            userDescription: '',
+            taskNameUpdate: '',
+            badges: [],
+            posts: [],
         };
 
-        console.log(this.props.id);
-        if (this.state.nickname === '') {
-            console.log(localStorage.getItem('id'));
-            this.props.getUser(localStorage.getItem('id'))
-        }
-        this.props.getTasks(localStorage.getItem('id'))
-
+        this.props.getUser();
+        this.props.getTasks();
     }
 
     setModalVisible = (modal1Visible) => {
@@ -48,9 +45,9 @@ class MainPageComponent extends React.Component {
 
     createTaskClick = (modal1Visible) => {
         this.setState({modal1Visible: modal1Visible});
-        console.log(this.props.id);
+        console.log(this.state.id);
 
-        this.props.createTask(this.props.id, this.state.descriptionCreate, this.state.taskName);
+        this.props.createTask(this.state.id, this.state.descriptionCreate, this.state.taskName);
         this.state.descriptionCreate = '';
         this.state.taskName = '';
     };
@@ -79,42 +76,33 @@ class MainPageComponent extends React.Component {
 
     updateTaskClick = (modalVisible) => {
         this.setState({modalVisible});
-        console.log(this.props.id, this.state.taskId, this.state.descriptionUpdate, this.state.taskNameUpdate);
+        console.log(this.props.id, this.state.descriptionUpdate, this.state.taskNameUpdate);
 
-        this.props.updateTask(this.props.id, this.state.taskId, this.state.descriptionUpdate, this.state.taskNameUpdate);
+        this.props.updateTask(this.props.id,  this.state.descriptionUpdate, this.state.taskNameUpdate);
         this.state.descriptionUpdate = '';
         this.state.taskNameUpdate = '';
     };
 
 
     render() {
-        if (this.props.admin && this.props.users.length < 1) {
-            this.props.sendRequestAllUser(this.props.nickname)
-        }
-
-        console.log(this.props.tasks);
-        const a = this.props.users.map((data) => {
-            return <p>{data.email}</p>
-        });
-
-        const tasks = this.props.tasks.map((data) => {
+        console.log(this.props.posts);
+        const posts = this.props.posts.map((data) => {
             return <section className="taskArea">
                 <section className="taskName">
-                    <h2>{data.nameTask}</h2>
+                    <h2>{data.description.title}</h2>
                     <section className="buttonsEdit">
                         <Button type="primary" shape="circle" icon="edit" size="small"
-                                onClick={() => this.setModalUpdateVisible(true, data.nameTask, data.description, data.uniqId)}/>
+                                onClick={() => this.setModalUpdateVisible(true, data.description.title, data.description.description, data.id)}/>
                         <Button type="primary" shape="circle" icon="delete" size="small"
-                                onClick={() => this.deleteTask(data.uniqId)}/>
+                                onClick={() => this.deleteTask(data.id)}/>
                     </section>
                 </section>
                 <section className="taskDescription">
-                    {data.description}
+                    {data.description.description}
                 </section>
             </section>
         });
 
-        const admin = this.props.admin;
         return (
             <section className="mainPageSection">
                 <section className="flexMain">
@@ -156,13 +144,12 @@ class MainPageComponent extends React.Component {
                     <section>
                         <img className="avatar" src={this.props.photo} alt="avatar"/>
                         <h2 className="userText"> {this.props.nickname}</h2>
-                        {/*<Button className="editProfileButton" type="primary">Edit Profile</Button>*/}
-                        {admin === true && <h2>All users</h2>}
-                        {a}
+                        <h3 className="userText">{this.props.userDescription}</h3>
+                        <Button className="editProfileButton" type="primary">Edit Profile</Button>
                     </section>
 
                     <section className="containerTasks">
-                        {tasks}
+                        {posts}
                     </section>
 
                 </section>
@@ -178,18 +165,18 @@ class MainPageComponent extends React.Component {
 
 const getState = (state) => {
 
-    if (state.reducerUser.id !== '') {
-        localStorage.setItem('id', state.reducerUser.id);
-    }
+    console.log(state);
 
     return {
-        nickname: state.reducerUser.email,
+        posts : state.reducerTasks.activities,
+
+        nickname: state.reducerUser.userName,
         photo: state.reducerUser.photo,
+        badges: state.reducerUser.badges,
+        skills: state.reducerUser.skills,
+        userDescription: state.reducerUser.description,
         fullName: state.reducerUser.fullName,
-        admin: state.reducerUser.admin,
         id: state.reducerUser.id,
-        users: state.reducerAllUsers.users,
-        tasks: state.reducerTasks.tasks
     };
 };
 

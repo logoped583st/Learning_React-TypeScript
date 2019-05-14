@@ -1,30 +1,42 @@
 import {
     fetchCreateTasksSuccess,
-    fetchTasksSuccess,
+    fetchTasksSuccess, fetchTokenSuccess,
     fetchUserError,
     fetchUsersSuccess,
     fetchUserSuccess
 } from "../actions/actions";
-import reducerTasks from "../reducers/ReducerTasks";
 
 const BASE_URL = 'http://localhost:8080/';
 
+
 export const sendRequestUser = (login, password) => (dispatch) => {
     console.log(login + " " + password);
-    return fetch(BASE_URL + 'authorization?login=' + login + "&password=" + password)
-        .then((res) => {
 
-            if (200 <= res.status < 400) {
-                return res.json()
-            } else {
-                return dispatch(fetchUserError())
-            }
+    console.log(JSON.stringify({
+        login: login, password: password
+    }));
+    return fetch(BASE_URL + 'authorization', {
+        method: 'POST',
+        headers: new Headers({'Content-Type': 'application/json'}),
+        body: JSON.stringify({
+            login: login, password: password
         })
+
+    }).then((res) => {
+        console.log(res.status);
+
+        if (200 <= res.status < 400) {
+            return res.json()
+        } else {
+            return dispatch(fetchUserError())
+        }
+    })
         .then((json) => {
-            dispatch(fetchUserSuccess(json));
+            console.log(json);
+            return dispatch(fetchTokenSuccess(json));
         }).catch((err) => {
             return dispatch(fetchUserError())
-        })
+        });
 };
 
 
@@ -33,13 +45,14 @@ export const sendRequestAllUser = (login) => (dispatch) => {
         .then((res) => {
             if (200 <= res.status < 400) {
                 return res.json()
+
             } else {
 
             }
         })
         .then((json) => {
             console.log(json);
-            dispatch(fetchUsersSuccess(json));
+
         }).catch((err) => {
             console.log(err);
         })
@@ -63,47 +76,61 @@ export const registerUser = (login, password) => (dispatch) => {
         })
 };
 
-export const getUser = (id) => (dispatch) => {
-    return fetch(BASE_URL + 'getUser?id=' + id)
+export const getUser = () => (dispatch) => {
+    console.log(localStorage.getItem('token'));
+    return fetch(BASE_URL + 'user', {
+            method: 'GET',
+            headers: new Headers({
+                'Authorization': 'Bearer '+ localStorage.getItem('token')
+            })
+        },
+    )
         .then((res) => {
+            console.log(res.status);
+
             if (200 <= res.status < 400) {
-                console.log(res.status);
                 return res.json()
             } else {
                 return dispatch(fetchUserError())
             }
         })
         .then((json) => {
-            dispatch(fetchUserSuccess(json));
+            console.log(json);
+            return dispatch(fetchUserSuccess(json));
         }).catch((err) => {
             return dispatch(fetchUserError())
         })
 };
 
 
-export const getTasks = (id) => (dispatch) => {
-    return fetch(BASE_URL + 'tasks?id=' + id)
+export const getTasks = (token) => (dispatch) => {
+    return fetch(BASE_URL + 'activities', {headers: new Headers({'Authorization': 'Bearer '+ localStorage.getItem('token')})})
         .then((res) => {
+            console.log(res.status);
+
             if (200 <= res.status < 400) {
-                console.log(res.status);
                 return res.json()
             } else {
 
             }
         }).then((json) => {
+            console.log(json)
             return dispatch(fetchTasksSuccess(json))
         })
 };
 
 export const createTask = (id, description, taskName) => (dispatch) => {
-    return fetch(BASE_URL + "createTask", {
+    return fetch(BASE_URL + "activities", {
         method: "POST",
         headers: {
+            'Access-Control-Allow-Origin': '*',
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+ localStorage.getItem('token')
         },
-        body: JSON.stringify({id: id, description: description, nameTask: taskName})
+        body: JSON.stringify({title: taskName, description: description, type : 'POST'})
     }).then((res) => {
+
         if (200 <= res.status < 400) {
             return res.json()
         } else {
@@ -114,14 +141,16 @@ export const createTask = (id, description, taskName) => (dispatch) => {
     })
 };
 
-export const deleteTask = (id, userUUID) => (dispatch) => {
-    return fetch('http://localhost:8080/delete?id=' + id + '&userUUID=' + userUUID, {
+export const deleteTask = (id) => (dispatch) => {
+    return fetch(BASE_URL+'/activities/'    + id, {
         method: 'delete',
         headers: {
             'Access-Control-Allow-Origin': '*',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+ localStorage.getItem('token')
         },
     }).then((res) => {
+        console.log(res.status)
         if (200 <= res.status < 400) {
             return res.json()
         } else {
@@ -133,15 +162,18 @@ export const deleteTask = (id, userUUID) => (dispatch) => {
 };
 
 
-export const updateTask = (userUUID, id, description, taskName) => (dispatch) => {
-    return fetch(BASE_URL + "update?userUUID=" + userUUID, {
-        method: "POST",
+export const updateTask = (id, description, taskName) => (dispatch) => {
+    return fetch(BASE_URL + "activities/" + id, {
+        method: "PUT",
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+ localStorage.getItem('token')
         },
-        body: JSON.stringify({id: id, description: description, nameTask: taskName})
+        body: JSON.stringify({title: taskName, description: description, type : 'POST'})
     }).then((res) => {
+        console.log(res.status)
+
         if (200 <= res.status < 400) {
             return res.json()
         } else {

@@ -1,11 +1,13 @@
 const initialStateUser = {
     id: '',
+    userName: '',
+    description: '',
+    skills: [],
+    badges: [],
     photo: '',
-    email: '',
-    error: false,
-    admin: false
 
 };
+
 
 
 const reducerUser = (state = initialStateUser, action) => {

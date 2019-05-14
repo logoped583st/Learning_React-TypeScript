@@ -1,11 +1,11 @@
 import {applyMiddleware, createStore} from "redux";
 import {combineReducers} from 'redux'
 import thunk from "redux-thunk";
-import reducerUser from './ReducerUser'
-import reducerAllUsers from "./ReducerAllUsers";
 import reducerTasks from "./ReducerTasks";
+import reducerUser from "./ReducerUser";
+import reducerToken from "./TokenReduser";
 
-const reduser = combineReducers({reducerUser, reducerAllUsers, reducerTasks});
+const reduser = combineReducers({reducerToken, reducerUser, reducerTasks, });
 const store = createStore(reduser, applyMiddleware(thunk));
 
 export default store;

@@ -1,5 +1,8 @@
 const initialStateUser = {
-    tasks: []
+    activities: [
+
+
+    ]
 };
 
 
@@ -12,10 +15,10 @@ const reducerTasks = (state = initialStateUser, action) => {
             return Object.assign({}, state.reducerTasks, action.data);
         }
         case 'RESPONCE_SUCCESS_CREATE_TASKS': {
-            console.log(action.data.task);
+            console.log(action);
             return {
                 ...state,
-                tasks: state.tasks.concat(action.data.task)
+                activities: state.activities.concat(action.data.task)
             };
         }
         default: {

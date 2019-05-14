@@ -34,9 +34,13 @@ class App extends React.Component {
                                                                         forgotPassword={false}/>}/>/>
 
                             <Route path="/tempMaimPage"
-                                   render={() => <MainPageComponent
-                                       photo={"https://avatars3.githubusercontent.com/u/30079690?s=400&u=e3443b749fa4d36979e0d631192f3a7bbadc3eeb&v=4"}
-                                       nickname={"logoped583st"}/>}/>
+                                   render={() => {
+
+                                       return <MainPageComponent
+                                           photo={"https://avatars3.githubusercontent.com/u/30079690?s=400&u=e3443b749fa4d36979e0d631192f3a7bbadc3eeb&v=4"}
+                                           nickname={"logoped583st"}/>
+                                   }
+                                   }/>
                             <Redirect from="*" to="/login"/>
 
                             <Route path="/editProfile"/>

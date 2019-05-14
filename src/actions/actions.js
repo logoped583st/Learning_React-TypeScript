@@ -5,13 +5,25 @@ export const fetchUserSuccess = (responce) => (dispatch) => {
         {
             type: 'RESPONCE_SUCCESS_USER',
             data: {
-                id: responce.id,
-                email: responce.email,
+                id:responce.id,
+                userName: responce.userName,
+                description:responce.description,
+                skills: responce.skills,
+                badges: responce.badges,
                 photo: responce.photo,
-                admin: responce.admin
             }
         }
     )
+};
+
+
+export const fetchTokenSuccess = (responce) => (dispatch) => {
+    return dispatch({
+        type: 'TOKEN_SUCCES',
+        data: {
+            token : responce.token
+        }
+    })
 };
 
 export const fetchUserError = () => (dispatch) => {
@@ -43,7 +55,7 @@ export const fetchTasksSuccess = (response) => (dispatch) => {
         {
             type: 'RESPONCE_SUCCESS_TASKS',
             data: {
-                tasks: response
+                activities: response
             }
         }
     )
@@ -58,7 +70,7 @@ export const fetchCreateTasksSuccess = (response) => (dispatch) => {
             }
         }
     )
-}
+};
 
 
 

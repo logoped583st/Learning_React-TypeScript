@@ -5,7 +5,7 @@ import {registerUser} from "../../requsets/Requests";
 import {Redirect} from "react-router-dom";
 
 
-const FormItem = Form.Item;
+let FormItem = Form.Item;
 
 class RegistrationComponent extends React.Component {
 
@@ -61,7 +61,6 @@ class RegistrationComponent extends React.Component {
                         Register
                     </Button>
                 </FormItem>
-                {a.error === true && <h2>Incorrect login or password</h2>}
             </Form>
         );
     }
@@ -69,7 +68,7 @@ class RegistrationComponent extends React.Component {
 
 
 const getState = (state) => {
-    console.log(state)
+    console.log(state);
     return {
         login: state.reducerUser.email,
         error: state.reducerUser.error
