@@ -38,7 +38,7 @@ class LoginComponent extends React.Component {
 
     render() {
         console.log(this.props.token);
-        if (this.props  .token !== '') {
+        if (this.props.token !== '') {
             localStorage.setItem('token', this.props.token);
             return <Redirect to='/tempMaimPage'/>
         }

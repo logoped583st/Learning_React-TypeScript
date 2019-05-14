@@ -13,8 +13,8 @@ class RegistrationComponent extends React.Component {
         super(props);
         this.state = {
             email: '',
-            login: '',
-            password: ''
+            password: '',
+            token: '',
         }
     }
 
@@ -34,9 +34,9 @@ class RegistrationComponent extends React.Component {
     };
 
     render() {
-        console.log(this.props.login);
-        const a = this.props;
-        if (a.login !== '') {
+        console.log(this.props.token);
+        if (this.props.token !== '') {
+            localStorage.setItem('token', this.props.token);
             return <Redirect to='/tempMaimPage'/>
         }
 
@@ -70,8 +70,7 @@ class RegistrationComponent extends React.Component {
 const getState = (state) => {
     console.log(state);
     return {
-        login: state.reducerUser.email,
-        error: state.reducerUser.error
+        token: state.reducerToken.token,
     }
 
 };

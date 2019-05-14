@@ -21,7 +21,7 @@ class MainPageComponent extends React.Component {
             descriptionCreate: '',
             taskName: '',
             tasks: [],
-            taskId: '',
+            taskId: 0,
             descriptionUpdate: '',
             userDescription: '',
             taskNameUpdate: '',
@@ -38,15 +38,15 @@ class MainPageComponent extends React.Component {
     };
 
     setModalUpdateVisible = (modalVisible, taskName, description, taskId) => {
-        this.setState({descriptionUpdate: description, taskNameUpdate: taskName, taskId: taskId});
+        console.log(taskId);
+        this.setState({descriptionUpdate: description, taskNameUpdate: taskName});
+        console.log(this.state.taskId);
         this.setState({modalVisible})
     };
 
 
     createTaskClick = (modal1Visible) => {
         this.setState({modal1Visible: modal1Visible});
-        console.log(this.state.id);
-
         this.props.createTask(this.state.id, this.state.descriptionCreate, this.state.taskName);
         this.state.descriptionCreate = '';
         this.state.taskName = '';
@@ -76,9 +76,8 @@ class MainPageComponent extends React.Component {
 
     updateTaskClick = (modalVisible) => {
         this.setState({modalVisible});
-        console.log(this.props.id, this.state.descriptionUpdate, this.state.taskNameUpdate);
 
-        this.props.updateTask(this.props.id,  this.state.descriptionUpdate, this.state.taskNameUpdate);
+        this.props.updateTask(this.state.id, this.state.descriptionUpdate, this.state.taskNameUpdate);
         this.state.descriptionUpdate = '';
         this.state.taskNameUpdate = '';
     };
@@ -92,7 +91,12 @@ class MainPageComponent extends React.Component {
                     <h2>{data.description.title}</h2>
                     <section className="buttonsEdit">
                         <Button type="primary" shape="circle" icon="edit" size="small"
-                                onClick={() => this.setModalUpdateVisible(true, data.description.title, data.description.description, data.id)}/>
+                                onClick={() => {
+                                    this.setModalUpdateVisible(true, data.description.title, data.description.description, data.id)
+                                    this.setState({taskId: data.id});
+                                }
+
+                                }/>
                         <Button type="primary" shape="circle" icon="delete" size="small"
                                 onClick={() => this.deleteTask(data.id)}/>
                     </section>
@@ -112,10 +116,10 @@ class MainPageComponent extends React.Component {
                         visible={this.state.modal1Visible}
                         onOk={() => this.createTaskClick(false)}
                         onCancel={() => this.setModalVisible(false)}>
-                    <TextArea id="textAreaOwn" placeholder="Name of task"
-                              value={this.state.taskName}
-                              onChange={this.nameChange}
-                              autosize={{minRows: 1, maxRows: 1}}/>
+                        <TextArea id="textAreaOwn" placeholder="Name of task"
+                                  value={this.state.taskName}
+                                  onChange={this.nameChange}
+                                  autosize={{minRows: 1, maxRows: 1}}/>
                         <TextArea id="textAreaOwn" placeholder="Description of task"
                                   onChange={this.descriptionChange}
 
@@ -130,10 +134,10 @@ class MainPageComponent extends React.Component {
                         visible={this.state.modalVisible}
                         onOk={() => this.updateTaskClick(false)}
                         onCancel={() => this.setModalUpdateVisible(false)}>
-                    <TextArea id="textAreaOwn" placeholder="Name of task"
-                              onChange={this.updateNameChange}
-                              value={this.state.taskNameUpdate}
-                              autosize={{minRows: 1, maxRows: 1}}/>
+                        <TextArea id="textAreaOwn" placeholder="Name of task"
+                                  onChange={this.updateNameChange}
+                                  value={this.state.taskNameUpdate}
+                                  autosize={{minRows: 1, maxRows: 1}}/>
                         <TextArea id="textAreaOwn" placeholder="Description of task"
                                   onChange={this.updateDescriptionChange}
 
@@ -168,7 +172,7 @@ const getState = (state) => {
     console.log(state);
 
     return {
-        posts : state.reducerTasks.activities,
+        posts: state.reducerTasks.activities,
 
         nickname: state.reducerUser.userName,
         photo: state.reducerUser.photo,

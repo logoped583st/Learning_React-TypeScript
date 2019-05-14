@@ -24,7 +24,7 @@ export const sendRequestUser = (login, password) => (dispatch) => {
 
     }).then((res) => {
         console.log(res.status);
-
+        console.log(res.json());
         if (200 <= res.status < 400) {
             return res.json()
         } else {
@@ -60,17 +60,23 @@ export const sendRequestAllUser = (login) => (dispatch) => {
 
 export const registerUser = (login, password) => (dispatch) => {
     console.log(login + " " + password);
-    return fetch(BASE_URL + 'registration?login=' + login + '&password=' + password)
+    return fetch(BASE_URL + 'registration', {
+        method: 'POST',
+        headers: new Headers({'Content-Type': 'application/json'}),
+        body: JSON.stringify({
+            login: login, password: password
+        })})
         .then((res) => {
+            console.log(res.status);
             if (200 <= res.status < 400) {
-                console.log(res.status);
                 return res.json()
             } else {
                 return dispatch(fetchUserError())
             }
         })
         .then((json) => {
-            dispatch(fetchUserSuccess(json));
+            console.log(json)
+            return dispatch(fetchTokenSuccess(json));
         }).catch((err) => {
             return dispatch(fetchUserError())
         })
@@ -163,6 +169,7 @@ export const deleteTask = (id) => (dispatch) => {
 
 
 export const updateTask = (id, description, taskName) => (dispatch) => {
+    console.log(id)
     return fetch(BASE_URL + "activities/" + id, {
         method: "PUT",
         headers: {
